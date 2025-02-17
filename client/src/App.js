@@ -5,6 +5,9 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import PetitionerRegistration from "./pages/PetitionerRegistration";
+import OfficialRegistration from "./pages/OfficialRegistration";
+import AdminRegistration from "./pages/AdminRegistration";
 // import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
   return (
@@ -16,6 +19,9 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/register/petitioner" element={<PetitionerRegistration />} />
+        <Route path="/register/official" element={<OfficialRegistration />} />
+        <Route path="/register/admin" element={<AdminRegistration />} />
       </Routes>
     </Router>
   );

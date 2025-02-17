@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Footer from '../shared/Footer';
@@ -7,12 +6,24 @@ import { User, FileText, Shield } from 'lucide-react';  // Importing icons from 
 
 const Register = () => {
   const navigate = useNavigate();
-
+  
   const handleRegister = (userType) => {
-    alert(`Registration as ${userType} would happen here`);
-    navigate('/login');
+    switch(userType) {
+      case 'petitioner':
+        navigate('/register/petitioner');
+        break;
+      case 'official':
+        navigate('/register/official');
+        break;
+      case 'admin':
+        navigate('/register/admin');
+        break;
+      default:
+        alert(`Registration as ${userType} would happen here`);
+        navigate('/login');
+    }
   };
-
+  
   return (
     <>
       <div>
@@ -20,7 +31,6 @@ const Register = () => {
         <div className="container py-5">
           <h2 className="text-center text-dark">Grievance Redressal System</h2>
           <h4 className="text-center text-secondary">Select your registration type</h4>
-
           <div className="row justify-content-center mt-4">
             {/* Petitioner */}
             <div className="col-md-3 text-center">
@@ -37,7 +47,6 @@ const Register = () => {
                 </button>
               </div>
             </div>
-
             {/* Officials */}
             <div className="col-md-3 text-center">
               <div className="card p-3 shadow">
@@ -53,7 +62,6 @@ const Register = () => {
                 </button>
               </div>
             </div>
-
             {/* Master Controller */}
             <div className="col-md-3 text-center">
               <div className="card p-3 shadow">
@@ -70,7 +78,6 @@ const Register = () => {
               </div>
             </div>
           </div>
-
           <div className="text-center mt-4">
             <p className="text-dark">
               Already have an account? <Link to="/login" className="text-primary">Login here</Link>
