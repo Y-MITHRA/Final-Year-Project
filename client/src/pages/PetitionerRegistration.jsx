@@ -18,9 +18,9 @@ const PetitionerRegistration = () => {
     password: '',
     confirmPassword: ''
   });
-  
+
   const [errors, setErrors] = useState({});
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -28,21 +28,21 @@ const PetitionerRegistration = () => {
       [name]: value
     });
   };
-  
+
   const validateForm = () => {
     let tempErrors = {};
     let formIsValid = true;
-    
+
     if (!formData.firstName.trim()) {
       tempErrors.firstName = 'First name is required';
       formIsValid = false;
     }
-    
+
     if (!formData.lastName.trim()) {
       tempErrors.lastName = 'Last name is required';
       formIsValid = false;
     }
-    
+
     if (!formData.email.trim()) {
       tempErrors.email = 'Email is required';
       formIsValid = false;
@@ -50,7 +50,7 @@ const PetitionerRegistration = () => {
       tempErrors.email = 'Email is invalid';
       formIsValid = false;
     }
-    
+
     if (!formData.phone.trim()) {
       tempErrors.phone = 'Phone number is required';
       formIsValid = false;
@@ -58,7 +58,7 @@ const PetitionerRegistration = () => {
       tempErrors.phone = 'Phone number must be 10 digits';
       formIsValid = false;
     }
-    
+
     if (!formData.password) {
       tempErrors.password = 'Password is required';
       formIsValid = false;
@@ -66,16 +66,16 @@ const PetitionerRegistration = () => {
       tempErrors.password = 'Password must be at least 6 characters';
       formIsValid = false;
     }
-    
+
     if (formData.password !== formData.confirmPassword) {
       tempErrors.confirmPassword = 'Passwords do not match';
       formIsValid = false;
     }
-    
+
     setErrors(tempErrors);
     return formIsValid;
   };
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
@@ -85,7 +85,7 @@ const PetitionerRegistration = () => {
       navigate('/login');
     }
   };
-  
+
   return (
     <>
       <NavBar />
@@ -96,7 +96,7 @@ const PetitionerRegistration = () => {
           </Link>
           <h2 className="mb-0">Petitioner Registration</h2>
         </div>
-        
+
         <div className="card shadow-sm">
           <div className="card-body">
             <div className="row mb-4 justify-content-center">
@@ -108,7 +108,7 @@ const PetitionerRegistration = () => {
                   <h4>Create Your Petitioner Account</h4>
                   <p className="text-muted">Fill out the form below to register</p>
                 </div>
-                
+
                 <form onSubmit={handleSubmit}>
                   <div className="row g-3">
                     <div className="col-md-6">
@@ -123,7 +123,7 @@ const PetitionerRegistration = () => {
                       />
                       {errors.firstName && <div className="invalid-feedback">{errors.firstName}</div>}
                     </div>
-                    
+
                     <div className="col-md-6">
                       <label htmlFor="lastName" className="form-label">Last Name*</label>
                       <input
@@ -137,7 +137,7 @@ const PetitionerRegistration = () => {
                       {errors.lastName && <div className="invalid-feedback">{errors.lastName}</div>}
                     </div>
                   </div>
-                  
+
                   <div className="row g-3 mt-1">
                     <div className="col-md-6">
                       <label htmlFor="email" className="form-label">Email*</label>
@@ -151,7 +151,7 @@ const PetitionerRegistration = () => {
                       />
                       {errors.email && <div className="invalid-feedback">{errors.email}</div>}
                     </div>
-                    
+
                     <div className="col-md-6">
                       <label htmlFor="phone" className="form-label">Phone*</label>
                       <input
@@ -165,7 +165,7 @@ const PetitionerRegistration = () => {
                       {errors.phone && <div className="invalid-feedback">{errors.phone}</div>}
                     </div>
                   </div>
-                  
+
                   <div className="mt-3">
                     <label htmlFor="address" className="form-label">Address</label>
                     <input
@@ -177,7 +177,7 @@ const PetitionerRegistration = () => {
                       onChange={handleChange}
                     />
                   </div>
-                  
+
                   <div className="row g-3 mt-1">
                     <div className="col-md-6">
                       <label htmlFor="city" className="form-label">City</label>
@@ -190,7 +190,7 @@ const PetitionerRegistration = () => {
                         onChange={handleChange}
                       />
                     </div>
-                    
+
                     <div className="col-md-3">
                       <label htmlFor="state" className="form-label">State</label>
                       <select
@@ -231,7 +231,7 @@ const PetitionerRegistration = () => {
                         <option value="WB">West Bengal</option>
                       </select>
                     </div>
-                    
+
                     <div className="col-md-3">
                       <label htmlFor="pincode" className="form-label">Pincode</label>
                       <input
@@ -244,7 +244,7 @@ const PetitionerRegistration = () => {
                       />
                     </div>
                   </div>
-                  
+
                   <div className="row g-3 mt-3">
                     <div className="col-md-6">
                       <label htmlFor="password" className="form-label">Password*</label>
@@ -258,7 +258,7 @@ const PetitionerRegistration = () => {
                       />
                       {errors.password && <div className="invalid-feedback">{errors.password}</div>}
                     </div>
-                    
+
                     <div className="col-md-6">
                       <label htmlFor="confirmPassword" className="form-label">Confirm Password*</label>
                       <input
@@ -272,7 +272,7 @@ const PetitionerRegistration = () => {
                       {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword}</div>}
                     </div>
                   </div>
-                  
+
                   <div className="row mt-4">
                     <div className="col-12">
                       <div className="form-check">
@@ -288,17 +288,17 @@ const PetitionerRegistration = () => {
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="d-grid gap-2 mt-4">
                     <button type="submit" className="btn btn-primary btn-lg">
                       Register as Petitioner
                     </button>
                   </div>
                 </form>
-                
+
                 <div className="text-center mt-4">
                   <p>
-                    Already have an account? <Link to="/login" className="text-primary">Login here</Link>
+                    Already have an account? <Link to="/login/petitioner" className="text-primary">Login here</Link>
                   </p>
                 </div>
               </div>

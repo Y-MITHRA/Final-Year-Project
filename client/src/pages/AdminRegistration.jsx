@@ -301,7 +301,7 @@ const AdminRegistration = () => {
                 
                 <div className="text-center mt-4">
                   <p>
-                    Already have an account? <Link to="/login" className="text-danger">Login here</Link>
+                    Already have an account? <Link to="/login/admin" className="text-danger">Login here</Link>
                   </p>
                 </div>
               </div>

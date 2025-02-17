@@ -1,6 +1,6 @@
 
 
-import React from 'react'; 
+import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Footer from '../shared/Footer';
 import NavBar from '../components/NavBar';
@@ -36,7 +36,7 @@ const Login = () => {
                 </div>
                 <h5 className="mt-2">Petitioner</h5>
                 <p>Login to file and track grievances</p>
-                <button className="btn btn-primary w-100" onClick={() => handleLogin('petitioner')}>
+                <button className="btn btn-primary w-100" onClick={() => navigate('/login/petitioner')}>
                   Login as Petitioner
                 </button>
               </div>
@@ -52,7 +52,7 @@ const Login = () => {
                 </div>
                 <h5 className="mt-2">Officials</h5>
                 <p>Login as a department official</p>
-                <button className="btn btn-success w-100" onClick={() => handleLogin('official')}>
+                <button className="btn btn-success w-100" onClick={() =>navigate('/login/official')}>
                   Login as Official
                 </button>
               </div>
@@ -68,20 +68,20 @@ const Login = () => {
                 </div>
                 <h5 className="mt-2">Master Controller</h5>
                 <p>Login as system administrator</p>
-                <button className="btn btn-danger w-100" onClick={() => handleLogin('admin')}>
+                <button className="btn btn-danger w-100" onClick={() => navigate('/login/admin')}>
                   Login as Master
                 </button>
-              </div>
             </div>
           </div>
+        </div>
 
-          <div className="text-center mt-4">
-            <p>
-              Don't have an account? <Link to="/register" className="text-primary">Register here</Link>
-            </p>
-          </div>
+        <div className="text-center mt-4">
+          <p>
+            Don't have an account? <Link to="/register" className="text-primary">Register here</Link>
+          </p>
         </div>
       </div>
+    </div >
       <Footer />
     </>
   );

@@ -376,7 +376,7 @@ const OfficialRegistration = () => {
                 
                 <div className="text-center mt-4">
                   <p>
-                    Already have an account? <Link to="/login" className="text-success">Login here</Link>
+                    Already have an account? <Link to="/login/official" className="text-success">Login here</Link>
                   </p>
                 </div>
               </div>
