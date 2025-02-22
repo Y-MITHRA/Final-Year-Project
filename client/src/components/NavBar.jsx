@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import { Bell, Menu, X } from 'lucide-react';
-import { useNavigate, Link } from 'react-router-dom'; 
-import shield from '../assets/shield.png';  
+import { useNavigate, Link } from 'react-router-dom';
+import shield from '../assets/shield.png';
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,10 +23,10 @@ const NavBar = () => {
             style={{ borderRadius: '4px' }}
           />
           <span className="fw-bold d-none d-md-inline">
-              <Link to="/" className="text-white" style={{ textDecoration: 'none' }}>
-                Grievance Portal
-              </Link>
-            </span>
+            <Link to="/" className="text-white" style={{ textDecoration: 'none' }}>
+              Grievance Portal
+            </Link>
+          </span>
         </a>
 
         {/* Mobile Menu Button */}
@@ -45,7 +45,7 @@ const NavBar = () => {
         <div className={`collapse navbar-collapse ${isMenuOpen ? 'show' : ''}`} id="navbarContent">
           <ul className="navbar-nav me-auto mb-2 mb-md-0">
             <li className="nav-item">
-              
+
               <Link className="nav-link active" aria-current="page" to="/">Home</Link>
             </li>
             <li className="nav-item">

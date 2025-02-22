@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import Footer from '../shared/Footer';
-import NavBar from '../components/NavBar';
-import { LogIn, ArrowLeft } from 'lucide-react';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import Footer from "../shared/Footer";
+import NavBar from "../components/NavBar";
+import { LogIn, ArrowLeft } from "lucide-react";
+
+// Dummy petitioner for testing
+const petitionerUser = {
+    email: "petitioner@example.com",
+    password: "petitioner123",
+    role: "petitioner",
+};
 
 const PetitionerLogin = () => {
     const navigate = useNavigate();
-    const [formData, setFormData] = useState({
-        email: '',
-        password: ''
-    });
-
+    const [formData, setFormData] = useState({ email: "", password: "" });
     const [errors, setErrors] = useState({});
+    const [serverError, setServerError] = useState("");
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
+        setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     const validateForm = () => {
@@ -26,15 +26,15 @@ const PetitionerLogin = () => {
         let formIsValid = true;
 
         if (!formData.email.trim()) {
-            tempErrors.email = 'Email is required';
+            tempErrors.email = "Email is required";
             formIsValid = false;
         } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-            tempErrors.email = 'Email is invalid';
+            tempErrors.email = "Invalid email format";
             formIsValid = false;
         }
 
         if (!formData.password) {
-            tempErrors.password = 'Password is required';
+            tempErrors.password = "Password is required";
             formIsValid = false;
         }
 
@@ -44,12 +44,22 @@ const PetitionerLogin = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (validateForm()) {
-            // Here you would typically authenticate with your backend
-            console.log('Login attempted:', formData);
-            // Simulate successful login
-            alert('Login successful!');
-            navigate('/dashboard');
+        if (!validateForm()) return;
+
+        setServerError(""); // Reset previous errors
+
+        // ✅ Check if the user is a valid petitioner
+        if (
+            formData.email === petitionerUser.email &&
+            formData.password === petitionerUser.password
+        ) {
+            // ✅ Store petitioner info in localStorage
+            localStorage.setItem("userType", petitionerUser.role);
+            localStorage.setItem("email", petitionerUser.email);
+            alert("Petitioner Login Successful!");
+            navigate("/login/petitioner/dashboard"); // Redirect petitioner
+        } else {
+            setServerError("Invalid email, password, or access denied.");
         }
     };
 
@@ -69,19 +79,21 @@ const PetitionerLogin = () => {
                         <div className="row mb-4 justify-content-center">
                             <div className="col-md-6">
                                 <div className="text-center mb-4">
-                                    <div className="bg-primary d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style={{ width: '80px', height: '80px' }}>
+                                    <div className="bg-primary d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style={{ width: "80px", height: "80px" }}>
                                         <LogIn size={40} className="text-white" />
                                     </div>
-                                    <h4>Login to Your Account</h4>
+                                    <h4>Petitioner Access</h4>
                                     <p className="text-muted">Enter your credentials to access your account</p>
                                 </div>
+
+                                {serverError && <div className="alert alert-danger">{serverError}</div>}
 
                                 <form onSubmit={handleSubmit}>
                                     <div className="mb-3">
                                         <label htmlFor="email" className="form-label">Email*</label>
                                         <input
                                             type="email"
-                                            className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                                            className={`form-control ${errors.email ? "is-invalid" : ""}`}
                                             id="email"
                                             name="email"
                                             value={formData.email}
@@ -95,7 +107,7 @@ const PetitionerLogin = () => {
                                         <label htmlFor="password" className="form-label">Password*</label>
                                         <input
                                             type="password"
-                                            className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                                            className={`form-control ${errors.password ? "is-invalid" : ""}`}
                                             id="password"
                                             name="password"
                                             value={formData.password}
@@ -105,33 +117,13 @@ const PetitionerLogin = () => {
                                         {errors.password && <div className="invalid-feedback">{errors.password}</div>}
                                     </div>
 
-                                    <div className="mb-3 d-flex justify-content-between">
-                                        <div className="form-check">
-                                            <input
-                                                className="form-check-input"
-                                                type="checkbox"
-                                                id="rememberMe"
-                                            />
-                                            <label className="form-check-label" htmlFor="rememberMe">
-                                                Remember me
-                                            </label>
-                                        </div>
-                                        <Link to="/forgot-password" className="text-primary">
-                                            Forgot Password?
-                                        </Link>
-                                    </div>
-
                                     <div className="d-grid gap-2 mt-4">
-                                        <button type="submit" className="btn btn-primary btn-lg">
-                                            Login
-                                        </button>
+                                        <button type="submit" className="btn btn-primary btn-lg">Login</button>
                                     </div>
                                 </form>
 
                                 <div className="text-center mt-4">
-                                    <p>
-                                        Don't have an account? <Link to="/register/petitioner" className="text-primary">Register here</Link>
-                                    </p>
+                                    <p>Don't have an account? <Link to="/register/petitioner" className="text-primary">Register here</Link></p>
                                 </div>
                             </div>
                         </div>
