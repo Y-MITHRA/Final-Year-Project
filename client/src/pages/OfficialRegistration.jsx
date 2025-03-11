@@ -208,15 +208,9 @@ const OfficialRegistration = () => {
                         onChange={handleChange}
                       >
                         <option value="">Select Department</option>
-                        <option value="revenue">Revenue Department</option>
-                        <option value="health">Health Department</option>
-                        <option value="education">Education Department</option>
-                        <option value="agriculture">Agriculture Department</option>
-                        <option value="transport">Transport Department</option>
-                        <option value="police">Police Department</option>
-                        <option value="municipal">Municipal Administration</option>
-                        <option value="power">Power & Energy</option>
-                        <option value="water">Water Resources</option>
+                                            <option value="Water">Water</option>
+                                            <option value="RTO">RTO</option>
+                                            <option value="Electricity">Electricity</option>
                       </select>
                       {errors.department && <div className="invalid-feedback">{errors.department}</div>}
                     </div>

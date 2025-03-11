@@ -9,12 +9,19 @@ const officialUser = {
     employeeId: "emp001",
     email: "official@example.com",
     password: "official123",
+    department: "Water", // Added department field for validation
     role: "official",
 };
 
 const OfficialLogin = () => {
     const navigate = useNavigate();
-    const [formData, setFormData] = useState({ employeeId: "", email: "", password: "" });
+    const [formData, setFormData] = useState({
+        employeeId: "",
+        email: "",
+        password: "",
+        department: "",
+    });
+
     const [errors, setErrors] = useState({});
     const [serverError, setServerError] = useState("");
 
@@ -44,6 +51,11 @@ const OfficialLogin = () => {
             formIsValid = false;
         }
 
+        if (!formData.department) {
+            tempErrors.department = "Department is required";
+            formIsValid = false;
+        }
+
         setErrors(tempErrors);
         return formIsValid;
     };
@@ -57,14 +69,16 @@ const OfficialLogin = () => {
         if (
             formData.employeeId === officialUser.employeeId &&
             formData.email === officialUser.email &&
-            formData.password === officialUser.password
+            formData.password === officialUser.password &&
+            formData.department === officialUser.department
         ) {
             localStorage.setItem("userType", officialUser.role);
             localStorage.setItem("employeeId", officialUser.employeeId);
+            localStorage.setItem("department", officialUser.department);
             alert("Official Login Successful!");
             navigate("/official-dashboard"); // Redirect official
         } else {
-            setServerError("Invalid Employee ID, Email, or Password.");
+            setServerError("Invalid Employee ID, Email, Password, or Department.");
         }
     };
 
@@ -134,6 +148,24 @@ const OfficialLogin = () => {
                                             placeholder="Enter your password"
                                         />
                                         {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+                                    </div>
+
+                                    {/* Department Dropdown */}
+                                    <div className="mb-3">
+                                        <label htmlFor="department" className="form-label">Department*</label>
+                                        <select
+                                            className={`form-control ${errors.department ? "is-invalid" : ""}`}
+                                            id="department"
+                                            name="department"
+                                            value={formData.department}
+                                            onChange={handleChange}
+                                        >
+                                            <option value="">Select Department</option>
+                                            <option value="Water">Water</option>
+                                            <option value="RTO">RTO</option>
+                                            <option value="Electricity">Electricity</option>
+                                        </select>
+                                        {errors.department && <div className="invalid-feedback">{errors.department}</div>}
                                     </div>
 
                                     <div className="d-grid gap-2 mt-4">
