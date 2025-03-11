@@ -3,82 +3,46 @@ import { useNavigate, Link } from "react-router-dom";
 import Footer from "../shared/Footer";
 import NavBar from "../components/NavBar";
 import { LogIn, ArrowLeft } from "lucide-react";
+import axios from 'axios';
 
-// Dummy official user for testing
-const officialUser = {
-    employeeId: "emp001",
-    email: "official@example.com",
-    password: "official123",
-    department: "Water", // Added department field for validation
-    role: "official",
-};
 
 const OfficialLogin = () => {
     const navigate = useNavigate();
-    const [formData, setFormData] = useState({
-        employeeId: "",
-        email: "",
-        password: "",
-        department: "",
-    });
-
-    const [errors, setErrors] = useState({});
-    const [serverError, setServerError] = useState("");
+    
+    const [formData, setFormData] = useState({ email: "", password: "" });
+    const [error, setError] = useState("");          // ✅ For login errors
+    const [serverError, setServerError] = useState(""); // ✅ For server-related issues
+    const [errors, setErrors] = useState({}); 
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const validateForm = () => {
-        let tempErrors = {};
-        let formIsValid = true;
-
-        if (!formData.employeeId.trim()) {
-            tempErrors.employeeId = "Employee ID is required";
-            formIsValid = false;
-        }
-
-        if (!formData.email.trim()) {
-            tempErrors.email = "Email is required";
-            formIsValid = false;
-        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-            tempErrors.email = "Invalid email format";
-            formIsValid = false;
-        }
-
-        if (!formData.password) {
-            tempErrors.password = "Password is required";
-            formIsValid = false;
-        }
-
-        if (!formData.department) {
-            tempErrors.department = "Department is required";
-            formIsValid = false;
-        }
-
-        setErrors(tempErrors);
-        return formIsValid;
-    };
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!validateForm()) return;
+        try {
+            const response = await axios.post("http://localhost:5000/api/login/official", formData);
 
-        setServerError(""); // Reset previous errors
+            if (response.data.token) {
+                
 
-        if (
-            formData.employeeId === officialUser.employeeId &&
-            formData.email === officialUser.email &&
-            formData.password === officialUser.password &&
-            formData.department === officialUser.department
-        ) {
-            localStorage.setItem("userType", officialUser.role);
-            localStorage.setItem("employeeId", officialUser.employeeId);
-            localStorage.setItem("department", officialUser.department);
-            alert("Official Login Successful!");
-            navigate("/official-dashboard"); // Redirect official
-        } else {
-            setServerError("Invalid Employee ID, Email, Password, or Department.");
+                const { token,  officialEmail } = response.data;
+
+            // Store data in localStorage
+            localStorage.setItem("token", token);
+            localStorage.setItem("officialEmail", officialEmail);
+            localStorage.setItem("userType", "official");
+localStorage.setItem("isLoggedIn", true);
+
+                
+             
+                console.log("🔄 Redirect URL:", response.data.dashboardRedirect);  // ✅ Log Redirect URL
+                navigate(response.data.dashboardRedirect);
+            } else {
+                setError(response.data.error);
+            }
+        } catch (error) {
+            setError("Login failed. Please check your credentials.");
         }
     };
 

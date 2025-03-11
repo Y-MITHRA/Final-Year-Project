@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import Footer from '../shared/Footer';
 import NavBar from '../components/NavBar';
 import { FileText, ArrowLeft } from 'lucide-react';
-
+import axios from 'axios';
 const OfficialRegistration = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -94,15 +94,20 @@ const OfficialRegistration = () => {
     return formIsValid;
   };
   
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      // Here you would typically send the data to your backend
-      console.log('Form submitted:', formData);
-      alert('Registration successful! You can now login.');
-      navigate('/login');
+    try {
+        const response = await axios.post("http://localhost:5000/api/register/official", formData);
+
+        if (response.status === 201) {
+            alert("Official registration successful!");
+        } else {
+            setErrors(response.data.error || "Registration failed.");
+        }
+    } catch (error) {
+        setErrors(error.response?.data?.error || "Server error. Please try again later.");
     }
-  };
+};
   
   return (
     <>

@@ -1,4 +1,3 @@
-
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -18,8 +17,10 @@ import PetitionerLogin from "./pages/PetitionerLogin";
 import PetitionerDashboard from "./pages/PetitionerDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import OfficialDashboard from "./pages/OfficialDashboard";
+import WaterDashboard from "./official_dept/Water";
+import RTODashboard from "./official_dept/Rto";
+import ElectricityDashboard from "./official_dept/Electricity";
 import SubmitGrievance from './pages/SubmitGrievance';
-
 
 function App() {
   return (
@@ -40,7 +41,6 @@ function App() {
           <Route path="/login/petitioner" element={<PetitionerLogin />} />
           <Route path="/submit-grievance" element={<SubmitGrievance />} />
 
-
           {/* Protected Routes: Only Accessible to Authenticated Users */}
           <Route element={<ProtectedRoute allowedRoles={["petitioner"]} />}>
             <Route path="/login/petitioner/dashboard" element={<PetitionerDashboard />} />
@@ -48,7 +48,13 @@ function App() {
 
           <Route element={<ProtectedRoute allowedRoles={["official"]} />}>
             <Route path="/official-dashboard" element={<OfficialDashboard />} />
+            <Route path="/official-dashboard/water" element={<WaterDashboard />} />
+            <Route path="/official-dashboard/rto" element={<RTODashboard />} />
+            <Route path="/official-dashboard/electricity" element={<ElectricityDashboard />} />
           </Route>
+
+
+
 
           <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
