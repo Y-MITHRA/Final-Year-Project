@@ -6,6 +6,5 @@ export const getOfficialDashboard = (department) => {
             return '/official-dashboard/rto';
         case 'Electricity':
             return '/official-dashboard/electricity';
-        
     }
 };

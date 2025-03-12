@@ -52,9 +52,9 @@
 
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import Petitioner from '../models/Petitioner.js';
+// import Petitioner from '../models/Petitioner.js';
 import Official from '../models/Official.js';
-import Admin from '../models/Admin.js';
+// import Admin from '../models/Admin.js';
 import { getOfficialDashboard } from '../utils/redirectHelper.js';
 
 const generateToken = (id, role, department = null) => {
@@ -88,44 +88,4 @@ export const loginOfficial = async (req, res) => {
     });
 };
 
-// Petitioner Login
-export const loginPetitioner = async (req, res) => {
-    const { email, password } = req.body;
-    const petitioner = await Petitioner.findOne({ email });
-
-    if (!petitioner) {
-        return res.status(404).json({ error: 'Petitioner not found' });
-    }
-
-    const isPasswordMatch = await bcrypt.compare(password, petitioner.password);
-
-    if (!isPasswordMatch) {
-        return res.status(401).json({ error: 'Incorrect password' });
-    }
-
-    res.json({
-        token: generateToken(petitioner._id, 'petitioner'),
-        dashboardRedirect: '/login/petitioner/dashboard'
-    });
-};
-
-// Admin Login
-export const loginAdmin = async (req, res) => {
-    const { email, password } = req.body;
-    const admin = await Admin.findOne({ email });
-
-    if (!admin) {
-        return res.status(404).json({ error: 'Admin not found' });
-    }
-
-    const isPasswordMatch = await bcrypt.compare(password, admin.password);
-
-    if (!isPasswordMatch) {
-        return res.status(401).json({ error: 'Incorrect password' });
-    }
-
-    res.json({
-        token: generateToken(admin._id, 'admin'),
-        dashboardRedirect: '/admin/dashboard'
-    });
-};
+// Petitioner Lo

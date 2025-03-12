@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Footer from '../shared/Footer';
@@ -17,9 +18,9 @@ const AdminRegistration = () => {
     password: '',
     confirmPassword: ''
   });
-  
+
   const [errors, setErrors] = useState({});
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -27,21 +28,21 @@ const AdminRegistration = () => {
       [name]: value
     });
   };
-  
+
   const validateForm = () => {
     let tempErrors = {};
     let formIsValid = true;
-    
+
     if (!formData.firstName.trim()) {
       tempErrors.firstName = 'First name is required';
       formIsValid = false;
     }
-    
+
     if (!formData.lastName.trim()) {
       tempErrors.lastName = 'Last name is required';
       formIsValid = false;
     }
-    
+
     if (!formData.email.trim()) {
       tempErrors.email = 'Email is required';
       formIsValid = false;
@@ -49,7 +50,7 @@ const AdminRegistration = () => {
       tempErrors.email = 'Email is invalid';
       formIsValid = false;
     }
-    
+
     if (!formData.phone.trim()) {
       tempErrors.phone = 'Phone number is required';
       formIsValid = false;
@@ -57,25 +58,17 @@ const AdminRegistration = () => {
       tempErrors.phone = 'Phone number must be 10 digits';
       formIsValid = false;
     }
-    
+
     if (!formData.adminId.trim()) {
       tempErrors.adminId = 'Admin ID is required';
       formIsValid = false;
     }
-    
+
     if (!formData.position.trim()) {
       tempErrors.position = 'Position is required';
       formIsValid = false;
     }
-    
-    if (!formData.securityKey.trim()) {
-      tempErrors.securityKey = 'Security key is required';
-      formIsValid = false;
-    } else if (formData.securityKey !== 'ADMIN_SECRET_KEY') { // This is just for demonstration
-      tempErrors.securityKey = 'Invalid security key';
-      formIsValid = false;
-    }
-    
+
     if (!formData.password) {
       tempErrors.password = 'Password is required';
       formIsValid = false;
@@ -86,26 +79,45 @@ const AdminRegistration = () => {
       tempErrors.password = 'Password must include at least one uppercase letter, one lowercase letter, one number, and one special character';
       formIsValid = false;
     }
-    
+
     if (formData.password !== formData.confirmPassword) {
       tempErrors.confirmPassword = 'Passwords do not match';
       formIsValid = false;
     }
-    
+
     setErrors(tempErrors);
     return formIsValid;
   };
-  
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (validateForm()) {
-      // Here you would typically send the data to your backend
-      console.log('Form submitted:', formData);
-      alert('Registration submitted. Your request will be reviewed by the system administrators.');
-      navigate('/login');
+      try {
+        const response = await fetch('http://localhost:5000/api/admin/register', {  // Use your actual backend URL
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),  // Ensure formData contains username, email, password
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert('Registration successful! You can login.');
+          navigate('/login/admin'); // Redirect to login after successful registration
+        } else {
+          alert(data.message || 'Registration failed. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error submitting form:', error);
+        alert('An error occurred while submitting the form.');
+      }
     }
   };
-  
+
+
   return (
     <>
       <NavBar />
@@ -116,7 +128,7 @@ const AdminRegistration = () => {
           </Link>
           <h2 className="mb-0">Master Controller Registration</h2>
         </div>
-        
+
         <div className="card shadow-sm">
           <div className="card-body">
             <div className="row mb-4 justify-content-center">
@@ -128,11 +140,11 @@ const AdminRegistration = () => {
                   <h4>Create Your Master Controller Account</h4>
                   <p className="text-muted">Registration as Master Controller requires approval</p>
                 </div>
-                
+
                 <div className="alert alert-warning" role="alert">
                   <strong>Important:</strong> Master Controller accounts have full administrative access to the system. Registration requires a valid security key and will be subject to verification.
                 </div>
-                
+
                 <form onSubmit={handleSubmit}>
                   <div className="row g-3">
                     <div className="col-md-6">
@@ -147,7 +159,7 @@ const AdminRegistration = () => {
                       />
                       {errors.firstName && <div className="invalid-feedback">{errors.firstName}</div>}
                     </div>
-                    
+
                     <div className="col-md-6">
                       <label htmlFor="lastName" className="form-label">Last Name*</label>
                       <input
@@ -161,7 +173,7 @@ const AdminRegistration = () => {
                       {errors.lastName && <div className="invalid-feedback">{errors.lastName}</div>}
                     </div>
                   </div>
-                  
+
                   <div className="row g-3 mt-1">
                     <div className="col-md-6">
                       <label htmlFor="email" className="form-label">Email*</label>
@@ -175,7 +187,7 @@ const AdminRegistration = () => {
                       />
                       {errors.email && <div className="invalid-feedback">{errors.email}</div>}
                     </div>
-                    
+
                     <div className="col-md-6">
                       <label htmlFor="phone" className="form-label">Phone*</label>
                       <input
@@ -189,7 +201,7 @@ const AdminRegistration = () => {
                       {errors.phone && <div className="invalid-feedback">{errors.phone}</div>}
                     </div>
                   </div>
-                  
+
                   <div className="row g-3 mt-1">
                     <div className="col-md-6">
                       <label htmlFor="adminId" className="form-label">Admin ID*</label>
@@ -204,7 +216,7 @@ const AdminRegistration = () => {
                       />
                       {errors.adminId && <div className="invalid-feedback">{errors.adminId}</div>}
                     </div>
-                    
+
                     <div className="col-md-6">
                       <label htmlFor="position" className="form-label">Position*</label>
                       <input
@@ -219,10 +231,10 @@ const AdminRegistration = () => {
                       {errors.position && <div className="invalid-feedback">{errors.position}</div>}
                     </div>
                   </div>
-                  
-                  <div className="mt-3">
-                    <label htmlFor="securityKey" className="form-label">Security Key*</label>
-                    <input
+
+                  {/* <div className="mt-3"> */}
+                    {/* <label htmlFor="securityKey" className="form-label">Security Key*</label> */}
+                    {/* <input
                       type="password"
                       className={`form-control ${errors.securityKey ? 'is-invalid' : ''}`}
                       id="securityKey"
@@ -230,11 +242,11 @@ const AdminRegistration = () => {
                       value={formData.securityKey}
                       onChange={handleChange}
                       placeholder="Enter your administrator security key"
-                    />
-                    {errors.securityKey && <div className="invalid-feedback">{errors.securityKey}</div>}
+                    /> */}
+                    {/* {errors.securityKey && <div className="invalid-feedback">{errors.securityKey}</div>}
                     <small className="form-text text-muted">The security key is provided by existing administrators.</small>
-                  </div>
-                  
+                  </div> */}
+
                   <div className="row g-3 mt-3">
                     <div className="col-md-6">
                       <label htmlFor="password" className="form-label">Password*</label>
@@ -249,7 +261,7 @@ const AdminRegistration = () => {
                       {errors.password && <div className="invalid-feedback">{errors.password}</div>}
                       <small className="form-text text-muted">Password must be at least 8 characters and include uppercase, lowercase, number, and special character.</small>
                     </div>
-                    
+
                     <div className="col-md-6">
                       <label htmlFor="confirmPassword" className="form-label">Confirm Password*</label>
                       <input
@@ -263,7 +275,7 @@ const AdminRegistration = () => {
                       {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword}</div>}
                     </div>
                   </div>
-                  
+
                   <div className="row mt-4">
                     <div className="col-12">
                       <div className="form-check">
@@ -277,7 +289,7 @@ const AdminRegistration = () => {
                           I agree to the Terms of Service, Privacy Policy, and Security Protocols
                         </label>
                       </div>
-                      
+
                       <div className="form-check mt-2">
                         <input
                           className="form-check-input"
@@ -291,14 +303,14 @@ const AdminRegistration = () => {
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="d-grid gap-2 mt-4">
                     <button type="submit" className="btn btn-danger btn-lg">
                       Submit Registration Request
                     </button>
                   </div>
                 </form>
-                
+
                 <div className="text-center mt-4">
                   <p>
                     Already have an account? <Link to="/login/admin" className="text-danger">Login here</Link>

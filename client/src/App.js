@@ -41,10 +41,7 @@ function App() {
           <Route path="/login/petitioner" element={<PetitionerLogin />} />
           <Route path="/submit-grievance" element={<SubmitGrievance />} />
 
-          {/* Protected Routes: Only Accessible to Authenticated Users */}
-          <Route element={<ProtectedRoute allowedRoles={["petitioner"]} />}>
-            <Route path="/login/petitioner/dashboard" element={<PetitionerDashboard />} />
-          </Route>
+          <Route path="/login/petitioner/dashboard" element={<PetitionerDashboard />} />
 
           <Route element={<ProtectedRoute allowedRoles={["official"]} />}>
             <Route path="/official-dashboard" element={<OfficialDashboard />} />
@@ -56,9 +53,7 @@ function App() {
 
 
 
-          <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          </Route>
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
         </Routes>
       </GeneralContextProvider>
     </Router>
@@ -66,3 +61,5 @@ function App() {
 }
 
 export default App;
+
+

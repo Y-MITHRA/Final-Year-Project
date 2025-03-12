@@ -1,25 +1,9 @@
 import bcrypt from 'bcryptjs';
-import Petitioner from '../models/Petitioner.js';
+// import Petitioner from '../models/Petitioner.js';
 import Official from '../models/Official.js';
-import Admin from '../models/Admin.js';
+// import Admin from '../models/Admin.js';
 
-// Register Petitioner
-export const registerPetitioner = async (req, res) => {
-    const { email, password } = req.body;
 
-    // Check if Petitioner already exists
-    const existingPetitioner = await Petitioner.findOne({ email });
-    if (existingPetitioner) {
-        return res.status(400).json({ error: 'Petitioner already registered.' });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newPetitioner = new Petitioner({ ...req.body, password: hashedPassword });
-
-    await newPetitioner.save();
-    res.status(201).json({ message: "Petitioner registered successfully!" });
-};
 
 // Register Official// Register Official
 export const registerOfficial = async (req, res) => {
@@ -57,20 +41,4 @@ export const registerOfficial = async (req, res) => {
     }
 };
 
-// Register Admin
-export const registerAdmin = async (req, res) => {
-    const { email, password } = req.body;
 
-    // Check if Admin already exists
-    const existingAdmin = await Admin.findOne({ email });
-    if (existingAdmin) {
-        return res.status(400).json({ error: 'Admin already registered.' });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newAdmin = new Admin({ ...req.body, password: hashedPassword });
-
-    await newAdmin.save();
-    res.status(201).json({ message: "Admin registered successfully!" });
-};
