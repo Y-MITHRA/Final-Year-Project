@@ -1,7 +1,9 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Toaster } from 'react-hot-toast';
 import GeneralContextProvider from "./context/GeneralContext";
+import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GrievancePortal from "./components/GrievancePortal";
 import Login from "./pages/Login";
@@ -25,37 +27,78 @@ import SubmitGrievance from './pages/SubmitGrievance';
 function App() {
   return (
     <Router>
-      <GeneralContextProvider>
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<GrievancePortal />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/register/petitioner" element={<PetitionerRegistration />} />
-          <Route path="/register/official" element={<OfficialRegistration />} />
-          <Route path="/register/admin" element={<AdminRegistration />} />
-          <Route path="/login/admin" element={<AdminLogin />} />
-          <Route path="/login/official" element={<OfficialLogin />} />
-          <Route path="/login/petitioner" element={<PetitionerLogin />} />
-          <Route path="/submit-grievance" element={<SubmitGrievance />} />
+      <AuthProvider>
+        <GeneralContextProvider>
+          <Toaster position="top-right" />
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<GrievancePortal />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/register/petitioner" element={<PetitionerRegistration />} />
+            <Route path="/register/official" element={<OfficialRegistration />} />
+            <Route path="/register/admin" element={<AdminRegistration />} />
+            <Route path="/login/admin" element={<AdminLogin />} />
+            <Route path="/login/official" element={<OfficialLogin />} />
+            <Route path="/login/petitioner" element={<PetitionerLogin />} />
+            <Route path="/submit-grievance" element={<SubmitGrievance />} />
 
-          <Route path="/login/petitioner/dashboard" element={<PetitionerDashboard />} />
+            {/* Protected Routes */}
+            <Route
+              path="/petitioner-dashboard"
+              element={
+                <ProtectedRoute allowedRoles={["petitioner"]}>
+                  <PetitionerDashboard />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route element={<ProtectedRoute allowedRoles={["official"]} />}>
-            <Route path="/official-dashboard" element={<OfficialDashboard />} />
-            <Route path="/official-dashboard/water" element={<WaterDashboard />} />
-            <Route path="/official-dashboard/rto" element={<RTODashboard />} />
-            <Route path="/official-dashboard/electricity" element={<ElectricityDashboard />} />
-          </Route>
+            <Route
+              path="/official-dashboard"
+              element={
+                <ProtectedRoute allowedRoles={["official"]}>
+                  <OfficialDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/official-dashboard/water"
+              element={
+                <ProtectedRoute allowedRoles={["official"]}>
+                  <WaterDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/official-dashboard/rto"
+              element={
+                <ProtectedRoute allowedRoles={["official"]}>
+                  <RTODashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/official-dashboard/electricity"
+              element={
+                <ProtectedRoute allowedRoles={["official"]}>
+                  <ElectricityDashboard />
+                </ProtectedRoute>
+              }
+            />
 
-
-
-
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        </Routes>
-      </GeneralContextProvider>
+            <Route
+              path="/admin-dashboard"
+              element={
+                <ProtectedRoute allowedRoles={["admin"]}>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </GeneralContextProvider>
+      </AuthProvider>
     </Router>
   );
 }

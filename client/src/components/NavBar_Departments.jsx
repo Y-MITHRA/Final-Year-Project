@@ -1,5 +1,3 @@
-
-
 import React, { useState } from 'react';
 import { Bell, Menu, X } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
@@ -13,7 +11,7 @@ const NavBar = () => {
     <nav className="navbar navbar-expand-md navbar-dark bg-primary shadow">
       <div className="container">
         {/* Logo */}
-        <a className="navbar-brand d-flex align-items-center" href="#">
+        <Link to="/" className="navbar-brand d-flex align-items-center">
           <img
             src={shield}
             alt="Logo"
@@ -22,12 +20,10 @@ const NavBar = () => {
             height="40"
             style={{ borderRadius: '4px' }}
           />
-          <span className="fw-bold d-none d-md-inline">
-            <Link to="/" className="text-white" style={{ textDecoration: 'none' }}>
-              Grievance Portal
-            </Link>
+          <span className="fw-bold d-none d-md-inline text-white">
+            Grievance Portal
           </span>
-        </a>
+        </Link>
       </div>
     </nav>
   );
